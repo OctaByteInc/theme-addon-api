@@ -1,12 +1,17 @@
 # code editors
 .vscode
-DS_Store
 .DS_Store
 .idea
 
 # lib directory
 /lib
 
-# python complie files
-*.pyc
+# don't ignore the double underscore files (e.g __init__.py)
+!__*
 
+# ignore double underscore folders (e.g __pycache__)
+__*/
+
+
+# ignore python complie files
+*.pyc

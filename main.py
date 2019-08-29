@@ -11,10 +11,10 @@ from endpoints import remote
 
 from google.appengine.ext import ndb
 
-from model.propduct_review import ProductReview
+from model.product_review import ProductReview
 from proto.product_review import *
 
-@endpoints.api(name='Theme Addon API', version='v1')
+@endpoints.api(name='ThemeAddonAPI', version='v1')
 class ThemeAddonAPI(remote.Service):
 
     @endpoints.method(
@@ -24,39 +24,38 @@ class ThemeAddonAPI(remote.Service):
         http_method='POST',
         name='save_review')
     def save_review(self, request):
-        parent_key = ndb.Key(ProductReview, request.product_id)
+        parent_key = ndb.Key("ProductReview", request.product_id)
 
         productReview = ProductReview(parent=parent_key)
         productReview.name = request.name
         productReview.review = request.review
         productReview.stars = request.stars
-
-        ProductReview.put()
+        productReview.put()
 
         return ReviewMessage(message='Your product review is successfully saved')
 
 
     @endpoints.method(
-        ProductReview,
+        message_types.VoidMessage,
         ReviewResponse,
         path='get_reviews',
         http_method='GET',
         name='get_reviews')
     def get_reviews(self, request):
-        ancestor_key = ndb.Key(ProductReview, request.product_id)
+        ancestor_key = ndb.Key(ProductReview, 123)
 
         productReviews = ProductReview.query_reviews(ancestor_key).fetch()
 
         reviews = []
 
         for review in productReviews:
-            single_review = Review(review.name,
-                                   review.review,
-                                   review.stars,
-                                   review.date)
+            single_review = Review(name=review.name,
+                                   review=review.review,
+                                   stars=review.stars,
+                                   date=review.date)
             reviews.append(single_review)
 
-        return ReviewResponse(reviews)
+        return ReviewResponse(reviews=reviews)
 
 # [END api class]
 

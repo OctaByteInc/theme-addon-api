@@ -1,10 +1,11 @@
 import endpoints
 from endpoints import messages
+from endpoints import message_types
 
 class ReviewMessage(messages.Message):
     message = messages.StringField(1)
 
-class ProductReview(messages.Message):
+class ProductId(messages.Message):
     product_id = messages.IntegerField(1, required=True)
 
 class ReviewRequest(messages.Message):
@@ -18,7 +19,7 @@ class Review(messages.Message):
     name = messages.StringField(1)
     review = messages.StringField(2)
     stars = messages.IntegerField(3)
-    date = messages.DateTimeField(4)
+    date = message_types.DateTimeField(4)
 
 
 class ReviewResponse(messages.Message):
