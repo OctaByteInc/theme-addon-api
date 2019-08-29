@@ -1,0 +1,12 @@
+# code editors
+.vscode
+DS_Store
+.DS_Store
+.idea
+
+# lib directory
+/lib
+
+# python complie files
+*.pyc
+
