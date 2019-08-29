@@ -14,11 +14,13 @@ from google.appengine.ext import ndb
 from model.product_review import ProductReview
 from proto.product_review import *
 
-@endpoints.api(name='ThemeAddonAPI', version='v1')
+@endpoints.api(name='ThemeAddonAPI', 
+               version='v1', 
+               description='This API is for shopify Themes developed by OctaByte')
 class ThemeAddonAPI(remote.Service):
 
     @endpoints.method(
-        REVIEW_RESOURCE,
+        ReviewRequest,
         ReviewMessage,
         path='save_review',
         http_method='POST',
@@ -36,7 +38,7 @@ class ThemeAddonAPI(remote.Service):
 
 
     @endpoints.method(
-        message_types.VoidMessage,
+        REVIEW_RESOURCE,
         ReviewResponse,
         path='get_reviews',
         http_method='GET',
@@ -44,9 +46,14 @@ class ThemeAddonAPI(remote.Service):
     def get_reviews(self, request):
         ancestor_key = ndb.Key(ProductReview, 123)
 
+        print(request.id)
+
         productReviews = ProductReview.query_reviews(ancestor_key).fetch()
 
         reviews = []
+
+        review_total = 0
+        review_count = 0
 
         for review in productReviews:
             single_review = Review(name=review.name,
@@ -55,7 +62,11 @@ class ThemeAddonAPI(remote.Service):
                                    date=review.date)
             reviews.append(single_review)
 
-        return ReviewResponse(reviews=reviews)
+            review_total += review.stars
+            review_count += 1
+
+        review_avg = review_total / review_count
+        return ReviewResponse(reviews=reviews, total_review=review_avg)
 
 # [END api class]
 

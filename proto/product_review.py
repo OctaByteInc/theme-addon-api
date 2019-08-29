@@ -24,6 +24,8 @@ class Review(messages.Message):
 
 class ReviewResponse(messages.Message):
     reviews = messages.MessageField(Review, 1, repeated=True)
+    total_review = messages.IntegerField(2)
 
-
-REVIEW_RESOURCE = endpoints.ResourceContainer(ReviewRequest)
+REVIEW_RESOURCE = endpoints.ResourceContainer(
+    message_types.VoidMessage,
+    id=messages.IntegerField(2, required=True))
