@@ -5,7 +5,7 @@ class ProductReview(ndb.Model):
     name = ndb.StringProperty(indexed=False)
     review = ndb.TextProperty(indexed=False)
     stars = ndb.IntegerProperty(indexed=False)
-    date = ndb.DateTimeProperty(auto_now_add=True)
+    date = ndb.DateTimeProperty(auto_now_add=True, indexed=True)
 
     @classmethod
     def query_reviews(cls, ancestor_key):

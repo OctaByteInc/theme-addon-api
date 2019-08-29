@@ -46,8 +46,6 @@ class ThemeAddonAPI(remote.Service):
     def get_reviews(self, request):
         ancestor_key = ndb.Key(ProductReview, 123)
 
-        print(request.id)
-
         productReviews = ProductReview.query_reviews(ancestor_key).fetch()
 
         reviews = []
