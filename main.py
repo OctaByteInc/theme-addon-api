@@ -44,7 +44,7 @@ class ThemeAddonAPI(remote.Service):
         http_method='GET',
         name='get_reviews')
     def get_reviews(self, request):
-        ancestor_key = ndb.Key(ProductReview, 123)
+        ancestor_key = ndb.Key(ProductReview, request.id)
 
         productReviews = ProductReview.query_reviews(ancestor_key).fetch()
 
@@ -52,6 +52,7 @@ class ThemeAddonAPI(remote.Service):
 
         review_total = 0
         review_count = 0
+        review_avg = 0
 
         for review in productReviews:
             single_review = Review(name=review.name,
@@ -63,7 +64,9 @@ class ThemeAddonAPI(remote.Service):
             review_total += review.stars
             review_count += 1
 
-        review_avg = review_total / review_count
+        if review_count is not 0:
+            review_avg = review_total / review_count
+
         return ReviewResponse(reviews=reviews, total_review=review_avg)
 
 # [END api class]
